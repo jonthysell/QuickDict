@@ -1,0 +1,2 @@
+﻿# Testing with some known acronyms
+hello world	hello world
