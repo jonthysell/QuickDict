@@ -1,5 +1,5 @@
 # QuickDict Changelog #
 
-## next ##
+## 0.9.0 ##
 
 * First NuGet release
