@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 
 using System;
-using System.IO;
-using System.Linq;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -28,22 +26,22 @@ namespace QuickDict.Test
         [TestMethod]
         public void StringExtensions_EscapeForXml_NoChangeTests()
         {
-            TestUtils.LoadAndExecuteTestCases<FixSentenceSpacingTestCase>("StringExtensions_EscapeForXml_NoChangeTests.txt");
+            TestUtils.LoadAndExecuteTestCases<EscapeForXmlTestCase>("StringExtensions_EscapeForXml_NoChangeTests.txt");
         }
 
-        public class FixSentenceSpacingTestCase : StringExtensionsTestCase
+        public class EscapeForXmlTestCase : StringExtensionsTestCase
         {
-            public FixSentenceSpacingTestCase() : base(StringExtensions.EscapeForXml) { }
+            public EscapeForXmlTestCase() : base(StringExtensions.EscapeForXml) { }
         }
 
         public abstract class StringExtensionsTestCase : ITestCase
         {
-            public string Input { get; private set; }
-            public string ExpectedOutput { get; private set; }
+            public string Input { get; private set; } = "";
+            public string ExpectedOutput { get; private set; } = "";
 
             public readonly Func<string, string> FunctionToTest;
 
-            public string ActualOutput { get; private set; }
+            public string ActualOutput { get; private set; } = "";
 
             public StringExtensionsTestCase(Func<string, string> functionToTest)
             {
