@@ -39,7 +39,7 @@ namespace QuickDict
         /// <summary>
         /// The creation timestamp for a <see cref="DictionaryBase" />.
         /// </summary>
-        public DateTime CreationDateTime { get; private set; } = DateTime.UtcNow;
+        public DateTime CreationDateTime { get; set; } = DateTime.UtcNow;
 
         /// <summary>
         /// The authors of a <see cref="DictionaryBase" />.
