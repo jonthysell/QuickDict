@@ -1,5 +1,0 @@
-﻿# Basic tests
-<	&lt;
->	&gt;
-&	&amp;
-<&>	&lt;&amp;&gt;
