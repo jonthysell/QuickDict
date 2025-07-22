@@ -77,11 +77,11 @@ namespace QuickDict
         /// <param name="target">The target string that should be wrapped in the XML tag.</param>
         /// <param name="tag">The XML tag to wrap each target string.</param>
         /// <param name="options">Options to control when wrapping occurs.</param>
-        /// <returns>The given string where each target string is wrapped in the  given XML tag.</returns>
+        /// <returns>The given string where each target string is wrapped in the given XML tag.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static string WrapInTag(this string s, string target, string tag, StringWrapInTagOptions options = StringWrapInTagOptions.None)
         {
-            if (string.IsNullOrWhiteSpace(s))
+            if (s is null)
             {
                 throw new ArgumentNullException(nameof(s));
             }
@@ -94,6 +94,11 @@ namespace QuickDict
             if (string.IsNullOrWhiteSpace(tag))
             {
                 throw new ArgumentNullException(nameof(tag));
+            }
+
+            if (s == "")
+            {
+                return "";
             }
 
             if (options == StringWrapInTagOptions.None)
