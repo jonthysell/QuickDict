@@ -141,8 +141,8 @@ namespace QuickDict
                             break;
                     }
 
-                    xw.WriteRaw(GetWrappedAbbreviationKey(abbreviation));
-                    xw.WriteRaw(GetWrappedAbbreviationValue(abbreviation));
+                    xw.WriteRaw(GetWrappedAbbreviationKey(abbreviation).Trim());
+                    xw.WriteRaw(GetWrappedAbbreviationValue(abbreviation).Trim());
 
                     xw.WriteEndElement(); // abbr_def
                 }
@@ -158,7 +158,10 @@ namespace QuickDict
             var wrappedKeySB = new StringBuilder();
             foreach (var rawKey in rawKeys)
             {
-                wrappedKeySB.Append(rawKey.WrapInTag("abbr_k"));
+                if (!string.IsNullOrWhiteSpace(rawKey))
+                {
+                    wrappedKeySB.Append(rawKey.WrapInTag("abbr_k"));
+                }
             }
 
             return wrappedKeySB.ToString();
@@ -198,17 +201,21 @@ namespace QuickDict
             var wrappedKeySB = new StringBuilder();
             foreach (var rawKey in rawKeys)
             {
-                var result = rawKey;
-
-                // Add opt around optional terms
-                if (GetXdxfKeyOptionalTerms is not null)
+                if (!string.IsNullOrWhiteSpace(rawKey))
                 {
-                    foreach (var optionalTerm in GetXdxfKeyOptionalTerms())
+                    var result = rawKey;
+
+                    // Add opt around optional terms
+                    if (GetXdxfKeyOptionalTerms is not null)
                     {
-                        result = result.WrapInTag(optionalTerm, "opt");
+                        foreach (var optionalTerm in GetXdxfKeyOptionalTerms())
+                        {
+                            result = result.WrapInTag(optionalTerm, "opt");
+                        }
                     }
+
+                    wrappedKeySB.Append(result.WrapInTag("k"));
                 }
-                wrappedKeySB.Append(result.WrapInTag("k"));
             }
 
             return wrappedKeySB.ToString();

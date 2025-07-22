@@ -1,2 +1,13 @@
-﻿# Testing with some known acronyms
+﻿# Basic tests
+test	test
 hello world	hello world
+
+# Test leading spaces
+ test	 test
+
+# Test trailing spaces
+test 	test 
+
+# Test only whitespace
+ 	 
+  	  

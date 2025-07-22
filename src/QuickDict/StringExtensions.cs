@@ -43,7 +43,7 @@ namespace QuickDict
             return s
                 .Replace("&", "&amp;")
                 .Replace("<", "&lt;")
-                .Replace(">", "&gt;").Trim();
+                .Replace(">", "&gt;");
         }
 
         /// <summary>
@@ -65,7 +65,9 @@ namespace QuickDict
                 throw new ArgumentNullException(nameof(tag));
             }
 
-            return $"<{tag.Trim()}>{s}</{tag.Trim()}>";
+            tag = tag.Trim();
+
+            return $"<{tag}>{s}</{tag}>";
         }
 
         /// <summary>
@@ -96,8 +98,10 @@ namespace QuickDict
 
             if (options == StringWrapInTagOptions.None)
             {
-                return s.Replace(target, target.WrapInTag(tag)).Trim();
+                return s.Replace(target, target.WrapInTag(tag));
             }
+
+            tag = tag.Trim();
 
             s = s.Replace($" {target} ", $" <{tag}>{target}</{tag}> ");
             s = s.Replace($"({target} ", $"(<{tag}>{target}</{tag}> ");

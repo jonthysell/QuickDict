@@ -29,6 +29,12 @@ namespace QuickDict.Test
             TestUtils.LoadAndExecuteTestCases<EscapeForXmlTestCase>("StringExtensions_EscapeForXml_NoChangeTests.txt");
         }
 
+        [TestMethod]
+        public void StringExtensions_EscapeForXml_ChangeTests()
+        {
+            TestUtils.LoadAndExecuteTestCases<EscapeForXmlTestCase>("StringExtensions_EscapeForXml_ChangeTests.txt");
+        }
+
         public class EscapeForXmlTestCase : StringExtensionsTestCase
         {
             public EscapeForXmlTestCase() : base(StringExtensions.EscapeForXml) { }
@@ -56,7 +62,7 @@ namespace QuickDict.Test
 
             public void Parse(string s)
             {
-                var split = s.Split('\t');
+                var split = s.Split('\t', 2, StringSplitOptions.None);
                 Input = split[0];
                 ExpectedOutput = split[1];
             }

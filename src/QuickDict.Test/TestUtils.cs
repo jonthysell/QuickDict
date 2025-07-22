@@ -16,7 +16,7 @@ namespace QuickDict.Test
     public static class TestUtils
     {
         public static Assembly TestAssembly => _testAssembly ??= typeof(TestUtils).GetTypeInfo().Assembly;
-        private static Assembly _testAssembly;
+        private static Assembly? _testAssembly;
 
         public static void AssertExceptionThrown<T>(Action action) where T : Exception
         {
@@ -76,12 +76,11 @@ namespace QuickDict.Test
 
             using (StreamReader sr = new StreamReader(GetEmbeddedResource(fileName)))
             {
-                string line;
+                string? line;
                 int lineNum = 0;
                 while ((line = sr.ReadLine()) is not null)
                 {
                     lineNum++;
-                    line = line.Trim();
                     if (!string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
                     {
                         T testCase = createTest();
@@ -102,7 +101,7 @@ namespace QuickDict.Test
             {
                 if (name.EndsWith(fileName))
                 {
-                    return TestAssembly.GetManifestResourceStream(name);
+                    return TestAssembly.GetManifestResourceStream(name)!;
                 }
             }
 
@@ -142,7 +141,7 @@ namespace QuickDict.Test
             }
         }
 
-        public static readonly string[] NullOrWhiteSpaceStrings = new string[]
+        public static readonly string?[] NullOrWhiteSpaceStrings = new string?[]
         {
             null,
             string.Empty,
