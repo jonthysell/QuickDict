@@ -10,18 +10,40 @@ using System.Xml;
 
 namespace QuickDict
 {
+    /// <summary>
+    /// Creates a dictionary in the XDXF format.
+    /// </summary>
     public class XdxfDictionary : DictionaryBase
     {
+        /// <summary>
+        /// Hook to provide the behavior to derive multiple keys from a single <see cref="Article" />.
+        /// </summary>
         public Func<Article, IList<string>> GetXdxfKeysFromArticle { get; set; } = null;
 
+        /// <summary>
+        /// Hook to provide the behavior to derive multiple values from a single <see cref="Article" />.
+        /// </summary>
         public Func<Article, IList<string>> GetXdxfValuesFromArticle { get; set; } = null;
 
+        /// Hook to provide optional terms which can be ignored in an <see cref="Article" />'s <see cref="Article.Key" />.
         public Func<ISet<string>> GetXdxfKeyOptionalTerms { get; set; } = null;
 
+        /// <summary>
+        /// Hook to provide the behavior to derive multiple keys from a single <see cref="Abbreviation" />.
+        /// </summary>
         public Func<Abbreviation, IList<string>> GetXdxfKeysFromAbbreviation { get; set; } = null;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XdxfDictionary"/> class.
+        /// </summary>
+        /// <param name="metadata">The dictionary's starting metadata.</param>
         public XdxfDictionary(DictionaryMetadata metadata = null) : base(metadata) { }
 
+        /// <summary>
+        /// Save this <see cref="XdxfDictionary"/> to the five (xdxf) filename.
+        /// </summary>
+        /// <param name="filename">The (xdxf) filename fo the file to save to.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public override void Save(string filename)
         {
             if (string.IsNullOrWhiteSpace(filename))
@@ -39,6 +61,11 @@ namespace QuickDict
             Save(fs);
         }
 
+        /// <summary>
+        /// Save this <see cref="XdxfDictionary" /> to the given stream.
+        /// </summary>
+        /// <param name="output">The stream for the xdxf file.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Save(Stream output)
         {
             if (output is null)
@@ -247,7 +274,7 @@ namespace QuickDict
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                xw.WriteElementString(localName, value);
+                xw.WriteElementString(localName, value.Trim());
             }
         }
 
@@ -255,7 +282,7 @@ namespace QuickDict
         {
             if (!string.IsNullOrWhiteSpace(value))
             {
-                xw.WriteAttributeString(localName, value);
+                xw.WriteAttributeString(localName, value.Trim());
             }
         }
     }

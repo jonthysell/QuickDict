@@ -9,14 +9,28 @@ using System.Text;
 
 namespace QuickDict
 {
+    /// <summary>
+    /// Creates a dictionary in the StarDict format.
+    /// </summary>
     public class StarDictDictionary : DictionaryBase
     {
+        /// <summary>
+        /// Hook to provide synonyms for a given <see cref="Article" />.
+        /// </summary>
         public Func<Article, ISet<string>> GetStarDictSynonymsFromArticle { get; set; } = null;
 
         private static readonly StarDictArticleComparer _keyComparer = new StarDictArticleComparer();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StarDictDictionary"/> class.
+        /// </summary>
+        /// <param name="metadata">The dictionary's starting metadata.</param>
         public StarDictDictionary(DictionaryMetadata metadata = null) : base(metadata) { }
 
+        /// <summary>
+        /// Save this <see cref="StarDictDictionary" /> to the given (ifo) filename, with other files saved in the same path.
+        /// </summary>
+        /// <param name="filename">The (ifo) filename of the file to save to.</param>
         public override void Save(string filename)
         {
             if (string.IsNullOrWhiteSpace(filename))
@@ -42,6 +56,14 @@ namespace QuickDict
             Save(ifoStream, dictStream, idxStream, synStream);
         }
 
+        /// <summary>
+        /// Save this <see cref="StarDictDictionary" /> to the given streams.
+        /// </summary>
+        /// <param name="ifoStream">The stream for the StarDict ifo file.</param>
+        /// <param name="dictStream">The stream for the StarDict dict file.</param>
+        /// <param name="idxStream">The stream for the StarDict idx file.</param>
+        /// <param name="synStream">The stream for the StarDict syn file.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Save(Stream ifoStream, Stream dictStream, Stream idxStream, Stream synStream)
         {
             if (ifoStream is null)
@@ -75,10 +97,10 @@ namespace QuickDict
             {
                 long dictArticleOffset = dictWriter.BaseStream.Length;
 
-                idxWriter.Write((GetKeyFromArticle is not null ? GetKeyFromArticle(article) : article.Key).ToCharArray());
+                idxWriter.Write((GetKeyFromArticle is not null ? GetKeyFromArticle(article) : article.Key).Trim().ToCharArray());
                 idxWriter.Write('\0');
 
-                dictWriter.Write((GetValueFromArticle is not null ? GetValueFromArticle(article) : article.Value).ToCharArray());
+                dictWriter.Write((GetValueFromArticle is not null ? GetValueFromArticle(article) : article.Value).Trim().ToCharArray());
 
                 dictWriter.Flush();
 
@@ -106,14 +128,17 @@ namespace QuickDict
             {
                 uint keyIndex = articleIndex.Value;
 
-                var rawKey = GetKeyFromArticle is not null ? GetKeyFromArticle(articleIndex.Key) : articleIndex.Key.Key;
+                var rawKey = (GetKeyFromArticle is not null ? GetKeyFromArticle(articleIndex.Key) : articleIndex.Key.Key).Trim();
 
                 var rawSynonyms = GetStarDictSynonymsFromArticle?.Invoke(articleIndex.Key);
                 rawSynonyms?.Remove(rawKey); // Synonyms shouldn't contain the original key
 
                 foreach (string rawSynonym in rawSynonyms)
                 {
-                    synonyms.Add(new KeyValuePair<string, uint>(rawSynonym, keyIndex));
+                    if (!string.IsNullOrWhiteSpace(rawSynonym))
+                    {
+                        synonyms.Add(new KeyValuePair<string, uint>(rawSynonym.Trim(), keyIndex));
+                    }
                 }
             }
 
