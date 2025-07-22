@@ -1,6 +1,6 @@
 # QuickDict Changelog #
 
-## next ##
+## v0.9.1 ##
 
 * Added Intellisense documentation to all public APIs
 * Removed unnecessary Trim()s to improve performance

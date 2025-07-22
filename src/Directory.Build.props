@@ -12,7 +12,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageTags>dictionary;stardict;xdxf</PackageTags>
-    <Version>0.9.0</Version>
+    <Version>0.9.1</Version>
     <AssemblyVersion>$(Version).0</AssemblyVersion>
     <FileVersion>$(AssemblyVersion)</FileVersion>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
