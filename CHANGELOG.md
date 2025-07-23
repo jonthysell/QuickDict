@@ -1,6 +1,6 @@
 # QuickDict Changelog #
 
-## next ##
+## v0.9.3 ##
 
 * Fix string extensions that aren't extenions
 
