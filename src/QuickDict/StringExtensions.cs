@@ -3,6 +3,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace QuickDict
 {
@@ -142,7 +145,7 @@ namespace QuickDict
         /// <summary>
         /// Divide the given string by numbered definition.
         /// </summary>
-        /// <param name="s">The given string.</param>
+        /// <param name="s">The string to divide.</param>
         /// <param name="keepDefinitionNumbers">Whether or not to keep the defintion numbers in the result.</param>
         /// <returns>Each separate definition, in order.</returns>
         public static IEnumerable<string> GetDefinitions(this string s, bool keepDefinitionNumbers)
@@ -207,6 +210,123 @@ namespace QuickDict
                     yield return def;
                 }
             }
+        }
+
+        /// <summary>
+        /// Strip all new line characters from the given string.
+        /// </summary>
+        /// <param name="s">The string.</param>
+        /// <param name="replace">Optional replacement string for new line characters.</param>
+        /// <returns>The stripped string.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string StripNewLines(this string s, string replace = "")
+        {
+            if (s is null)
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            return s.Replace("\r\n", replace).Replace("\r", replace).Replace("\n", replace);
+        }
+
+        /// <summary>
+        /// Strip all tab characters from the given string.
+        /// </summary>
+        /// <param name="s">The string.</param>
+        /// <param name="replace">Optional replacement string for tab characters.</param>
+        /// <returns>The stripped string.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string StripTabs(this string s, string replace = "")
+        {
+            if (s is null)
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            return s.Replace("\t", replace);
+        }
+
+        /// <summary>
+        /// Convert the given (multiline) string into a single line with no tabs.
+        /// </summary>
+        /// <param name="s">The string.</param>
+        /// <returns>The string as a single line with no tabs.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string SingleLineNoTabs(this string s)
+        {
+            if (s is null)
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            return StripNewLines(StripTabs(s, " "), " ");
+        }
+
+        /// <summary>
+        /// Normalize the given string by converting all consecutive ranges of whitespace characters into a single space.
+        /// Adapted from https://stackoverflow.com/a/39865783/1653267
+        /// </summary>
+        /// <param name="s">The string to normalize.</param>
+        /// <returns>The normalized string.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string NormalizeWhiteSpace(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            var len = s.Length;
+            var src = s.ToCharArray();
+            int dstIdx = 0;
+            bool lastWasWS = false;
+            for (int i = 0; i < len; i++)
+            {
+                var ch = src[i];
+                if (char.IsWhiteSpace(ch))
+                {
+                    if (lastWasWS == false)
+                    {
+                        src[dstIdx++] = ' ';
+                        lastWasWS = true;
+                    }
+                }
+                else
+                {
+                    lastWasWS = false;
+                    src[dstIdx++] = ch;
+                }
+            }
+            return new string(src, 0, dstIdx);
+        }
+
+        /// <summary>
+        /// Removes all diacritics from all characters in a given string.
+        /// Adapted from http://archives.miloush.net/michkap/archive/2007/05/14/2629747.html
+        /// </summary>
+        /// <param name="s">The target string.</param>
+        /// <returns>The string without diacritics.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string RemoveDiacritics(string s)
+        {
+            if (string.IsNullOrWhiteSpace(s))
+            {
+                throw new ArgumentNullException(nameof(s));
+            }
+
+            string sFormD = s.Normalize(NormalizationForm.FormD);
+            StringBuilder sb = new StringBuilder();
+
+            for (int ich = 0; ich < sFormD.Length; ich++)
+            {
+                UnicodeCategory uc = CharUnicodeInfo.GetUnicodeCategory(sFormD[ich]);
+                if (uc != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(sFormD[ich]);
+                }
+            }
+
+            return sb.ToString().Normalize(NormalizationForm.FormC);
         }
     }
 }
