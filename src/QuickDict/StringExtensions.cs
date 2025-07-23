@@ -269,7 +269,7 @@ namespace QuickDict
         /// <param name="s">The string to normalize.</param>
         /// <returns>The normalized string.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static string NormalizeWhiteSpace(string s)
+        public static string NormalizeWhiteSpace(this string s)
         {
             if (string.IsNullOrWhiteSpace(s))
             {
@@ -307,7 +307,7 @@ namespace QuickDict
         /// <param name="s">The target string.</param>
         /// <returns>The string without diacritics.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static string RemoveDiacritics(string s)
+        public static string RemoveDiacritics(this string s)
         {
             if (string.IsNullOrWhiteSpace(s))
             {

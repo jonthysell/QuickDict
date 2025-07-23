@@ -1,5 +1,9 @@
 # QuickDict Changelog #
 
+## next ##
+
+* Fix string extensions that aren't extenions
+
 ## v0.9.2 ##
 
 * Made DictionaryMetadata.CreateDateTime setter public
