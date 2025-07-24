@@ -160,7 +160,7 @@ namespace QuickDict
             WriteLine(ifoWriter, "StarDict's dict ifo file");
             WriteLine(ifoWriter, "version=2.4.2");
 
-            WriteLine(ifoWriter, "bookname={0}", Metadata.LongTitle);
+            WriteLine(ifoWriter, "bookname={0}", Metadata.LongTitle ?? Metadata.ShortTitle);
             WriteLine(ifoWriter, "wordcount={0}", Articles.Count);
             WriteLine(ifoWriter, "synwordcount={0}", synWordCount);
             WriteLine(ifoWriter, "idxfilesize={0}", idxFileSize);
