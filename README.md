@@ -25,7 +25,7 @@ Using QuickDict is as easy as:
 5. (Optional) Add all of the dictionary's abbreviations (i.e. term and definition pairs)
 6. Save the dictionary to disk
 
-Note: The library works best when using **plain text** in the 
+**Note:** The library works best when using *plain text* in the articles and abbreviations.
 
 ### Sample Code ###
 
