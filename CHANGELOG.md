@@ -1,6 +1,6 @@
 # QuickDict Changelog #
 
-## next ##
+## v1.0.0 ##
 
 * First real release
 
